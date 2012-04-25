@@ -39,7 +39,7 @@ public class RESTExampleActivity extends Activity {
 		sendData.setText("1");
 		host.setText("193.33.22.109");
 
-		Button butSend = (Button) findViewById(R.id.button1);
+		Button butSend = (Button) findViewById(R.id.btnSend);
 		butSend.setOnClickListener(new View.OnClickListener() {
 
 			@Override
