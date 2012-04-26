@@ -4,6 +4,6 @@
     <string name="hello">Hello World, RESTExampleActivity!</string>
     <string name="app_name">RESTExample</string>
     <string name="quit">Quit</string>
-    <string name="host">Host:</string>
+    <string name="host">Host</string>
 
 </resources>
