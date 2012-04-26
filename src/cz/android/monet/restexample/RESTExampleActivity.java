@@ -6,9 +6,15 @@ import org.apache.http.HttpHost;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
+
+import cz.android.monet.restexample.fragments.InputFragment;
+import cz.android.monet.restexample.fragments.OutputFragment;
+import cz.android.monet.restexample.interfaces.OnServerResultReturned;
 import android.app.Activity;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -19,11 +25,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class RESTExampleActivity extends Activity {
-
-	private EditText host;
-	private EditText sendData;
-	private TextView receiveData;
+public class RESTExampleActivity extends FragmentActivity implements OnServerResultReturned {
 
 	/** Called when the activity is first created. */
 	@Override
@@ -31,29 +33,12 @@ public class RESTExampleActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main);
 
-		receiveData = (TextView) findViewById(R.id.textReceiveData);
-		host = (EditText) findViewById(R.id.editHostAddress);
-		sendData = (EditText) findViewById(R.id.editSendData);
 		// receiveData = (TextView) findViewById(R.id.textReceiveData);
-
-		sendData.setText("1");
-		host.setText("193.33.22.109");
-
-		Button butSend = (Button) findViewById(R.id.btnSend);
-		butSend.setOnClickListener(new View.OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				new MyAsyncTask().execute(host.getText().toString(), sendData
-						.getText().toString());
-			}
-
-		});
 
 		// ThreadPolicy tp = ThreadPolicy.LAX;
 		// StrictMode.setThreadPolicy(tp);
 	}
-	
+
 	public boolean onCreateOptionsMenu(Menu menu) {
 		MenuInflater inflater = getMenuInflater();
 		inflater.inflate(R.menu.default_menu, menu);
@@ -72,53 +57,40 @@ public class RESTExampleActivity extends Activity {
 		return true;
 	}
 
-	private class MyAsyncTask extends AsyncTask<Object, Void, String> {
+	@Override
+	public void onResultReturned(String resultMessage) {
+		 // The user selected the headline of an article from the HeadlinesFragment
+        // Do something here to display that article
 
-		@Override
-		protected String doInBackground(Object... params) {
+        OutputFragment outputFrag = (OutputFragment)
+                getSupportFragmentManager().findFragmentById(R.id.output_fragment);
 
-			return SendData(params[0].toString(), params[1].toString());
-		}
+        if (outputFrag != null) {
+            // If article frag is available, we're in two-pane layout...
 
-		protected void onPostExecute(String result) {
-			receiveData.setText(result);
-		}
+            // Call a method in the ArticleFragment to update its content
+            outputFrag.updateResultView(resultMessage);
+        } else {
+            // Otherwise, we're in the one-pane layout and must swap frags...
 
-		protected String SendData(String host, String userId) {
-			String urlToSendRequest = "http://" + host + ":" + "2323"
-					+ "/restfulexample/app/user/" + userId;
-			String targetDomain = host;
-			// String xmlContentToSend = "hello this is a test";
+            // Create fragment and give it an argument for the selected article
+        	OutputFragment newFragment = new OutputFragment();
+            Bundle args = new Bundle();
+            args.putString("Message", resultMessage);
+            newFragment.setArguments(args);
+        
+            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
 
-			DefaultHttpClient httpClient = new DefaultHttpClient();
+            // Replace whatever is in the fragment_container view with this fragment,
+            // and add the transaction to the back stack so the user can navigate back
+            transaction.replace(R.id.input_fragment, newFragment);
+            transaction.addToBackStack(null);
 
-			HttpHost targetHost = new HttpHost(targetDomain, 2323, "http");
-			// Using GET here
-			HttpGet httpGet = new HttpGet(urlToSendRequest);
+            // Commit the transaction
+            transaction.commit();
+        }
 
-			// Make sure the server knows what kind of a response we will accept
-			httpGet.addHeader("Accept", "application/xml");
-
-			// Also be sure to tell the server what kind of content we are
-			// sending
-			httpGet.addHeader("Content-Type", "application/xml");
-
-			try {
-				// execute is a blocking call, it's best to call this code in a
-				// thread separate from the ui's
-				HttpResponse response = httpClient.execute(targetHost, httpGet);
-
-				// Have your way with the response
-				final OutputStream outstrem = new ByteArrayOutputStream();
-
-				response.getEntity().writeTo(outstrem);
-				return outstrem.toString();
-
-			} catch (Exception ex) {
-				ex.printStackTrace();
-				Log.e(ex.getClass().toString(), ex.getMessage());
-			}
-			return null;
-		}
+		
 	}
+
 }
