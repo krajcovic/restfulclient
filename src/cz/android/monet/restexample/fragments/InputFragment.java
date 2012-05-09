@@ -37,7 +37,6 @@ public class InputFragment extends Fragment {
 
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-
 	}
 
 	@Override
@@ -45,9 +44,20 @@ public class InputFragment extends Fragment {
 		super.onActivityCreated(savedInstanceState);
 		host = (EditText) getView().findViewById(R.id.editHostAddress);
 		sendData = (EditText) getView().findViewById(R.id.editSendData);
+		
+		 // Get the intent that started this activity
+	    Intent intent = getActivity().getIntent();
+	    Uri data = intent.getData();
+	    
+	    if (intent.getType().equals("text/plain")) {
+	        host.setText(data.getHost().toString());
+	    }
+	    else
+	    {
+	    	host.setText("193.33.22.109");
+	    }
 
 		sendData.setText("1");
-		host.setText("193.33.22.109");
 
 		Button butSend = (Button) getView().findViewById(R.id.btnSend);
 		butSend.setOnClickListener(new View.OnClickListener() {

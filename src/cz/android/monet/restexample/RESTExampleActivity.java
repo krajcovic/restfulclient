@@ -2,6 +2,9 @@ package cz.android.monet.restexample;
 
 import cz.android.monet.restexample.fragments.OutputFragment;
 import cz.android.monet.restexample.interfaces.OnServerResultReturned;
+import android.app.Activity;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
@@ -82,6 +85,14 @@ public class RESTExampleActivity extends FragmentActivity implements
 
 			// Commit the transaction
 			transaction.commit();
+		}
+
+		if (getIntent().getType().equals("text/plain")) {
+			// Create intent to deliver some kind of result data
+			Intent result = new Intent("RESULT_ACTION", Uri.parse("content://"
+					+ resultMessage));
+			setResult(Activity.RESULT_OK, result);
+			finish();
 		}
 
 	}
