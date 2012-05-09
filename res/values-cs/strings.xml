@@ -1,9 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="hello">Ahoj, RESTExampleActivity!</string>
     <string name="app_name">RESTExample</string>
     <string name="quit">Konec</string>
     <string name="host">Server</string>
+    <string name="staticSendData">Data k odeslání:</string>
+    <string name="butBarcode">Čárový kód</string>
+    <string name="butSend">Odeslat</string>
+    <string name="staticReceivedData">Přijatá data:</string>
+    <string name="emptyString"></string>
 
 </resources>
