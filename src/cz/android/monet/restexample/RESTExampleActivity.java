@@ -5,12 +5,16 @@ import cz.android.monet.restexample.interfaces.OnServerResultReturned;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.Toast;
 
-public class RESTExampleActivity extends FragmentActivity implements OnServerResultReturned {
+public class RESTExampleActivity extends FragmentActivity implements
+		OnServerResultReturned {
+
+	private static final String TAG = "RESTExampleActivity";
 
 	/** Called when the activity is first created. */
 	@Override
@@ -35,8 +39,9 @@ public class RESTExampleActivity extends FragmentActivity implements OnServerRes
 		case R.id.quit:
 			break;
 		default:
-			Toast.makeText(this, "Menu Item undefined selected",
-					Toast.LENGTH_SHORT).show();
+			// Toast.makeText(this, "Menu Item undefined selected",
+			// Toast.LENGTH_SHORT).show();
+			Log.d(TAG, "Undefined item id.");
 			break;
 		}
 		return true;
@@ -44,38 +49,41 @@ public class RESTExampleActivity extends FragmentActivity implements OnServerRes
 
 	@Override
 	public void onResultReturned(String resultMessage) {
-		 // The user selected the headline of an article from the HeadlinesFragment
-        // Do something here to display that article
+		// The user selected the headline of an article from the
+		// HeadlinesFragment
+		// Do something here to display that article
 
-        OutputFragment outputFrag = (OutputFragment)
-                getSupportFragmentManager().findFragmentById(R.id.output_fragment);
+		OutputFragment outputFrag = (OutputFragment) getSupportFragmentManager()
+				.findFragmentById(R.id.output_fragment);
 
-        if (outputFrag != null) {
-            // If article frag is available, we're in two-pane layout...
+		if (outputFrag != null) {
+			// If article frag is available, we're in two-pane layout...
 
-            // Call a method in the ArticleFragment to update its content
-            outputFrag.updateResultView(resultMessage);
-        } else {
-            // Otherwise, we're in the one-pane layout and must swap frags...
+			// Call a method in the ArticleFragment to update its content
+			outputFrag.updateResultView(resultMessage);
+		} else {
+			// Otherwise, we're in the one-pane layout and must swap frags...
 
-            // Create fragment and give it an argument for the selected article
-        	OutputFragment newFragment = new OutputFragment();
-            Bundle args = new Bundle();
-            args.putString("Message", resultMessage);
-            newFragment.setArguments(args);
-        
-            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+			// Create fragment and give it an argument for the selected article
+			OutputFragment newFragment = new OutputFragment();
+			Bundle args = new Bundle();
+			args.putString("Message", resultMessage);
+			newFragment.setArguments(args);
 
-            // Replace whatever is in the fragment_container view with this fragment,
-            // and add the transaction to the back stack so the user can navigate back
-            transaction.replace(R.id.input_fragment, newFragment);
-            transaction.addToBackStack(null);
+			FragmentTransaction transaction = getSupportFragmentManager()
+					.beginTransaction();
 
-            // Commit the transaction
-            transaction.commit();
-        }
+			// Replace whatever is in the fragment_container view with this
+			// fragment,
+			// and add the transaction to the back stack so the user can
+			// navigate back
+			transaction.replace(R.id.input_fragment, newFragment);
+			transaction.addToBackStack(null);
 
-		
+			// Commit the transaction
+			transaction.commit();
+		}
+
 	}
 
 }

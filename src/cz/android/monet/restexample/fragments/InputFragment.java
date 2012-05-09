@@ -14,6 +14,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.ContactsContract.CommonDataKinds.Phone;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,6 +22,8 @@ import android.widget.Button;
 import android.widget.EditText;
 
 public class InputFragment extends Fragment {
+
+	private static final String TAG = "InputFragment";
 
 	private EditText host;
 	private EditText sendData;
@@ -77,6 +80,8 @@ public class InputFragment extends Fragment {
 				if (isIntentSafe) {
 					startActivityForResult(pickContactIntent,
 							PICK_CONTACT_REQUEST);
+				} else {
+					Log.e(TAG, "Activity pickContactIntent isn't safe.");
 				}
 			}
 		});
@@ -107,7 +112,8 @@ public class InputFragment extends Fragment {
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 		// Check which request we're responding to
-		if (requestCode == PICK_CONTACT_REQUEST) {
+		switch (requestCode) {
+		case PICK_CONTACT_REQUEST:
 			// Make sure the request was successful
 			if (resultCode == RESULT_OK) {
 				// Get the URI that points to the selected contact
@@ -136,6 +142,7 @@ public class InputFragment extends Fragment {
 				number.trim();
 
 			}
+			break;
 		}
 	}
 }

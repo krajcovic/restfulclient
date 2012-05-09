@@ -15,6 +15,8 @@ import android.util.Log;
 
 public class SendUserIdAsyncTask extends AsyncTask<Object, Void, String> {
 
+	private static final String TAG = "SendUserIdAsyncTask";
+
 	OnServerResultReturned mResultCallback;
 
 	@Override
@@ -60,7 +62,7 @@ public class SendUserIdAsyncTask extends AsyncTask<Object, Void, String> {
 
 		} catch (Exception ex) {
 			ex.printStackTrace();
-			Log.e(ex.getClass().toString(), ex.getMessage());
+			Log.e(TAG, ex.getMessage());
 		}
 		return null;
 	}

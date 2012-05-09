@@ -3,12 +3,15 @@ package cz.android.monet.restexample.fragments;
 import cz.android.monet.restexample.R;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 public class OutputFragment extends Fragment {
+
+	private static final String TAG = "OutputFragment";
 
 	private TextView receiveData;
 
@@ -20,9 +23,8 @@ public class OutputFragment extends Fragment {
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
-		
-		receiveData = (TextView) getView().findViewById(R.id.textReceiveData);
 
+		receiveData = (TextView) getView().findViewById(R.id.textReceiveData);
 	}
 
 	@Override
@@ -33,7 +35,11 @@ public class OutputFragment extends Fragment {
 	}
 
 	public void updateResultView(String message) {
-		receiveData.setText(message);
+		if (receiveData != null) {
+			receiveData.setText(message);
+		} else {
+			Log.e(TAG, "receiveData isn't allocated.");
+		}
 	}
 
 }
