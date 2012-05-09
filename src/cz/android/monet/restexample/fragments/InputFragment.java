@@ -150,6 +150,7 @@ public class InputFragment extends Fragment {
 
 				// Do something with the phone number...
 				mResultCallback.onResultReturned(number);
+				sendData.setText(number);
 
 			}
 			break;
