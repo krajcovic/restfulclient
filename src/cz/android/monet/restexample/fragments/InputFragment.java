@@ -3,28 +3,34 @@ package cz.android.monet.restexample.fragments;
 import java.util.List;
 
 import cz.android.monet.restexample.R;
-import cz.android.monet.restexample.MyAsyncTask;
+import cz.android.monet.restexample.SendUserIdAsyncTask;
 import cz.android.monet.restexample.interfaces.OnServerResultReturned;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
+import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.ContactsContract.CommonDataKinds.Phone;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 
 public class InputFragment extends Fragment {
 
 	private EditText host;
 	private EditText sendData;
 	OnServerResultReturned mResultCallback;
+
+	// The resul code
+	static final int RESULT_OK = -1;
+
+	// The request code
+	static final int PICK_CONTACT_REQUEST = 1;
 
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -45,8 +51,8 @@ public class InputFragment extends Fragment {
 
 			@Override
 			public void onClick(View v) {
-				new MyAsyncTask().execute(host.getText().toString(), sendData
-						.getText().toString(), mResultCallback);
+				new SendUserIdAsyncTask().execute(host.getText().toString(),
+						sendData.getText().toString(), mResultCallback);
 			}
 
 		});
@@ -56,34 +62,21 @@ public class InputFragment extends Fragment {
 
 			@Override
 			public void onClick(View v) {
-				Uri number = Uri.parse("tel:734423665");
-				Intent callIntent = new Intent(Intent.ACTION_DIAL, number);
+				Intent pickContactIntent = new Intent(Intent.ACTION_PICK, Uri
+						.parse("content://contacts"));
+				pickContactIntent.setType(Phone.CONTENT_TYPE); // Show user only
+																// contacts w/
+																// phone numbers
 
-				// Map point based on address
-				Uri location = Uri
-						.parse("geo:0,0?q=1600+Amphitheatre+Parkway,+Mountain+View,+California");
-				// Or map point based on latitude/longitude
-				// Uri location = Uri.parse("geo:37.422219,-122.08364?z=14"); //
-				// z param is zoom level
-				Intent mapIntent = new Intent(Intent.ACTION_VIEW, location);
-
-				Uri webpage = Uri.parse("http://www.android.com");
-				Intent webIntent = new Intent(Intent.ACTION_VIEW, webpage);
-				
-				Intent intent = new Intent(Intent.ACTION_SEND);
-
-				// Always use string resources for UI text. This says something like "Share this photo with"
-				String title = "Vyberte aplikaci";
-				// Create and start the chooser
-				Intent chooser = Intent.createChooser(intent, title);
-	
-				PackageManager packageManager = getActivity().getApplicationContext().getPackageManager();
+				PackageManager packageManager = getActivity()
+						.getApplicationContext().getPackageManager();
 				List<ResolveInfo> activities = packageManager
-						.queryIntentActivities(webIntent, 0);
+						.queryIntentActivities(pickContactIntent, 0);
 				boolean isIntentSafe = activities.size() > 0;
 
 				if (isIntentSafe) {
-					startActivity(chooser);
+					startActivityForResult(pickContactIntent,
+							PICK_CONTACT_REQUEST);
 				}
 			}
 		});
@@ -109,5 +102,40 @@ public class InputFragment extends Fragment {
 					+ " must implement OnServerResultReturned");
 		}
 
+	}
+
+	@Override
+	public void onActivityResult(int requestCode, int resultCode, Intent data) {
+		// Check which request we're responding to
+		if (requestCode == PICK_CONTACT_REQUEST) {
+			// Make sure the request was successful
+			if (resultCode == RESULT_OK) {
+				// Get the URI that points to the selected contact
+				Uri contactUri = data.getData();
+				// We only need the NUMBER column, because there will be only
+				// one row in the result
+				String[] projection = { Phone.NUMBER };
+
+				// Perform the query on the contact to get the NUMBER column
+				// We don't need a selection or sort order (there's only one
+				// result for the given URI)
+				// CAUTION: The query() method should be called from a separate
+				// thread to avoid blocking
+				// your app's UI thread. (For simplicity of the sample, this
+				// code doesn't do that.)
+				// Consider using CursorLoader to perform the query.
+				Cursor cursor = getActivity().getContentResolver().query(
+						contactUri, projection, null, null, null);
+				cursor.moveToFirst();
+
+				// Retrieve the phone number from the NUMBER column
+				int column = cursor.getColumnIndex(Phone.NUMBER);
+				String number = cursor.getString(column);
+
+				// Do something with the phone number...
+				number.trim();
+
+			}
+		}
 	}
 }

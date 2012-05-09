@@ -12,9 +12,8 @@ import cz.android.monet.restexample.interfaces.OnServerResultReturned;
 
 import android.os.AsyncTask;
 import android.util.Log;
-import android.widget.TextView;
 
-public class MyAsyncTask extends AsyncTask<Object, Void, String> {
+public class SendUserIdAsyncTask extends AsyncTask<Object, Void, String> {
 
 	OnServerResultReturned mResultCallback;
 

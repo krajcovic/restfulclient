@@ -1,28 +1,13 @@
 package cz.android.monet.restexample;
 
-import java.io.ByteArrayOutputStream;
-import java.io.OutputStream;
-import org.apache.http.HttpHost;
-import org.apache.http.HttpResponse;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.DefaultHttpClient;
-
-import cz.android.monet.restexample.fragments.InputFragment;
 import cz.android.monet.restexample.fragments.OutputFragment;
 import cz.android.monet.restexample.interfaces.OnServerResultReturned;
-import android.app.Activity;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 public class RESTExampleActivity extends FragmentActivity implements OnServerResultReturned {

@@ -14,13 +14,14 @@
         android:id="@+id/editHostAddress"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:ems="10" />
+        android:ems="10"
+        android:inputType="textUri" />
 
     <TextView
         android:id="@+id/staticSendData"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Send data:" />
+        android:text="@string/staticSendData" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -28,7 +29,7 @@
 
         <EditText
             android:id="@+id/editSendData"
-            android:layout_width="match_parent"
+            android:layout_width="0dip"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:ems="10"
@@ -38,12 +39,13 @@
             android:id="@+id/btnReadBarCode"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Barcode" />
+            android:text="@string/butBarcode" />
     </LinearLayout>
 
     <Button
         android:id="@+id/btnSend"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Send" />
+        android:text="@string/butSend" />
+
 </LinearLayout>

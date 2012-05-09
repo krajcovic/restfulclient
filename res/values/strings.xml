@@ -5,5 +5,10 @@
     <string name="app_name">RESTExample</string>
     <string name="quit">Quit</string>
     <string name="host">Host</string>
+    <string name="staticSendData">Send data:</string>
+    <string name="butBarcode">Barcode</string>
+    <string name="butSend">Send</string>
+    <string name="staticReceivedData">Received data:</string>
+    <string name="emptyString"></string>
 
 </resources>
