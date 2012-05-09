@@ -12,7 +12,6 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.widget.Toast;
 
 public class RESTExampleActivity extends FragmentActivity implements
 		OnServerResultReturned {
@@ -87,14 +86,17 @@ public class RESTExampleActivity extends FragmentActivity implements
 			transaction.commit();
 		}
 
-		if (getIntent().getType().equals("text/plain")) {
+		// Get the intent that started this activity
+		Intent intent = getIntent();
+		Uri data = intent.getData();
+
+		if (data != null && intent.getType().equals("text/plain")) {
 			// Create intent to deliver some kind of result data
 			Intent result = new Intent("RESULT_ACTION", Uri.parse("content://"
 					+ resultMessage));
 			setResult(Activity.RESULT_OK, result);
 			finish();
 		}
-
 	}
 
 }

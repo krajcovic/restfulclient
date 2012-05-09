@@ -49,7 +49,7 @@ public class InputFragment extends Fragment {
 	    Intent intent = getActivity().getIntent();
 	    Uri data = intent.getData();
 	    
-	    if (intent.getType().equals("text/plain")) {
+	    if (data != null && intent.getType().equals("text/plain")) {
 	        host.setText(data.getHost().toString());
 	    }
 	    else
@@ -149,7 +149,7 @@ public class InputFragment extends Fragment {
 				String number = cursor.getString(column);
 
 				// Do something with the phone number...
-				number.trim();
+				mResultCallback.onResultReturned(number);
 
 			}
 			break;
