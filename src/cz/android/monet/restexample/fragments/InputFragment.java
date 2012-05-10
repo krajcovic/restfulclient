@@ -62,7 +62,6 @@ public class InputFragment extends Fragment {
 		Button butSend = (Button) getView().findViewById(R.id.btnSend);
 		butSend.setOnClickListener(new View.OnClickListener() {
 
-			@Override
 			public void onClick(View v) {
 				new SendUserIdAsyncTask().execute(host.getText().toString(),
 						sendData.getText().toString(), mResultCallback);
@@ -73,7 +72,6 @@ public class InputFragment extends Fragment {
 		Button butTest = (Button) getView().findViewById(R.id.btnReadBarCode);
 		butTest.setOnClickListener(new View.OnClickListener() {
 
-			@Override
 			public void onClick(View v) {
 				Intent pickContactIntent = new Intent(Intent.ACTION_PICK, Uri
 						.parse("content://contacts"));

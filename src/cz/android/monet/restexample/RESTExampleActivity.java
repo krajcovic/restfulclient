@@ -49,7 +49,6 @@ public class RESTExampleActivity extends FragmentActivity implements
 		return true;
 	}
 
-	@Override
 	public void onResultReturned(String resultMessage) {
 		// The user selected the headline of an article from the
 		// HeadlinesFragment
