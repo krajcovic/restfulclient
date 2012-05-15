@@ -23,11 +23,6 @@ public class RESTExampleActivity extends FragmentActivity implements
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main);
-
-		// receiveData = (TextView) findViewById(R.id.textReceiveData);
-
-		// ThreadPolicy tp = ThreadPolicy.LAX;
-		// StrictMode.setThreadPolicy(tp);
 	}
 
 	public boolean onCreateOptionsMenu(Menu menu) {
