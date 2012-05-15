@@ -9,7 +9,7 @@
         android:targetSdkVersion="15" />
 
     <uses-permission android:name="android.permission.INTERNET" />
-
+    
     <instrumentation
         android:name="android.test.InstrumentationTestRunner"
         android:targetPackage="cz.android.monet.restexample" />
