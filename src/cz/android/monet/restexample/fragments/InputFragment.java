@@ -42,7 +42,7 @@ public class InputFragment extends Fragment {
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
-		host = (EditText) getView().findViewById(R.id.editHostAddress);
+		host = ((EditText) getView().findViewById(R.id.editHostAddress));
 		sendData = (EditText) getView().findViewById(R.id.editSendData);
 		
 		 // Get the intent that started this activity
@@ -50,7 +50,7 @@ public class InputFragment extends Fragment {
 	    Uri data = intent.getData();
 	    
 	    if (data != null && intent.getType().equals("text/plain")) {
-	        host.setText(data.getHost().toString());
+	    	host.setText(data.getHost().toString());
 	    }
 	    else
 	    {
