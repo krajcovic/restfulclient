@@ -22,6 +22,9 @@ public class RESTExampleActivity extends FragmentActivity implements
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		
+		Log.v(TAG, "onCreate");
+		
 		setContentView(R.layout.main);
 	}
 
@@ -91,6 +94,47 @@ public class RESTExampleActivity extends FragmentActivity implements
 			setResult(Activity.RESULT_OK, result);
 			finish();
 		}
+	}
+
+	@Override
+	protected void onStart() {
+		super.onStart();
+		// The activity is about to become visible.
+		
+		Log.v(TAG, "onStart");
+	}
+
+	@Override
+	protected void onResume() {
+		super.onResume();
+		// The activity has become visible (it is now "resumed").
+		
+		Log.v(TAG, "onResume");
+	}
+
+	@Override
+	protected void onPause() {
+		super.onPause();
+		// Another activity is taking focus (this activity is about to be
+		// "paused").
+		
+		Log.v(TAG, "onPause");
+	}
+
+	@Override
+	protected void onStop() {
+		super.onStop();
+		// The activity is no longer visible (it is now "stopped")
+		
+		Log.v(TAG, "onStop");
+	}
+
+	@Override
+	protected void onDestroy() {
+		super.onDestroy();
+		// The activity is about to be destroyed.
+		
+		Log.v(TAG, "onDestroy");
 	}
 
 }
