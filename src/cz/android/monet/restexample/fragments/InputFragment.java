@@ -1,7 +1,6 @@
 package cz.android.monet.restexample.fragments;
 
 import java.util.List;
-
 import cz.android.monet.restexample.R;
 import cz.android.monet.restexample.SendUserIdAsyncTask;
 import cz.android.monet.restexample.interfaces.OnServerResultReturned;
