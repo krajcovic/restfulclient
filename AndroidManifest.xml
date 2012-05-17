@@ -21,8 +21,12 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+            <intent-filter>
+                <action android:name="none" />
+
+                <category android:name="android.intent.category.MONKEY" />
+            </intent-filter>
         </activity>
-        
         <activity
             android:name=".RESTExampleActivity"
             android:label="@string/app_name" >
