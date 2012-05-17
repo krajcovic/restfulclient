@@ -57,6 +57,7 @@
                         <!-- platform or api level (api level 4 = platform 1.6)-->
                         <platform>15</platform>
                     </sdk>
+                    <deleteConflictingFiles>true</deleteConflictingFiles>
                     <undeployBeforeDeploy>true</undeployBeforeDeploy>
                 </configuration>
                 <extensions>true</extensions>
