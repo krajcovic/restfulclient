@@ -2,6 +2,8 @@ package cz.android.monet.restexample;
 
 import java.io.ByteArrayOutputStream;
 import java.io.OutputStream;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.apache.http.HttpHost;
 import org.apache.http.HttpResponse;
@@ -10,6 +12,7 @@ import org.apache.http.impl.client.DefaultHttpClient;
 
 import cz.android.monet.restexample.interfaces.OnServerResultReturned;
 
+import android.R.bool;
 import android.os.AsyncTask;
 import android.util.Log;
 
@@ -23,14 +26,29 @@ public class SendUserIdAsyncTask extends AsyncTask<Object, Void, String> {
 	protected String doInBackground(Object... params) {
 
 		mResultCallback = (OnServerResultReturned) params[2];
-		return SendData(params[0].toString(), params[1].toString());
+		return sendData(params[0].toString(), params[1].toString());
 	}
 
 	protected void onPostExecute(String result) {
 		mResultCallback.onResultReturned(result);
 	}
+	
+	private boolean validateHost(String string) {
+		Pattern p = Pattern.compile("^\\s*(.*?):(\\d+)\\s*$");
+		Matcher m = p.matcher(string);
 
-	protected String SendData(String host, String userId) {
+		return m.matches();
+
+	}
+
+	protected String sendData(String host, String userId) {
+		
+		if(!this.validateHost(host))
+		{
+			Log.e(TAG, "Invalid host string | " + host);
+			return null;
+		}
+		
 		String urlToSendRequest = "http://" + host + ":" + "2323"
 				+ "/restfulexample/app/user/" + userId;
 		String targetDomain = host;
