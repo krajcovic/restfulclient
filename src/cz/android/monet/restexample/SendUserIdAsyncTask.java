@@ -32,7 +32,7 @@ public class SendUserIdAsyncTask extends AsyncTask<Object, Void, String> {
 	protected void onPostExecute(String result) {
 		mResultCallback.onResultReturned(result);
 	}
-	
+
 	private boolean validateHost(String string) {
 		Pattern p = Pattern.compile("^\\s*(.*?)");
 		Matcher m = p.matcher(string);
@@ -41,18 +41,15 @@ public class SendUserIdAsyncTask extends AsyncTask<Object, Void, String> {
 
 	}
 
-	protected String sendData(String host, String userId) {
-		
-		if(!this.validateHost(host))
-		{
-			Log.e(TAG, "Invalid host string | " + host);
+	protected String sendData(String targetDomain, String userId) {
+
+		if (!targetDomain.matches("^\\s*(.*?)")) {
+			Log.e(TAG, "Invalid host string | " + targetDomain);
 			return null;
 		}
-		
-		String urlToSendRequest = "http://" + host + ":" + "2323"
-				+ "/restfulexample/app/user/" + userId;
-		String targetDomain = host;
-		// String xmlContentToSend = "hello this is a test";
+
+		String urlToSendRequest = "http://" + targetDomain + ":" + "2323"
+				+ "/restfulexample/app/user/" + Integer.parseInt(userId);
 
 		DefaultHttpClient httpClient = new DefaultHttpClient();
 
