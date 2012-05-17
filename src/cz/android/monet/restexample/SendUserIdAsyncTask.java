@@ -34,7 +34,7 @@ public class SendUserIdAsyncTask extends AsyncTask<Object, Void, String> {
 	}
 	
 	private boolean validateHost(String string) {
-		Pattern p = Pattern.compile("^\\s*(.*?):(\\d+)\\s*$");
+		Pattern p = Pattern.compile("^\\s*(.*?)");
 		Matcher m = p.matcher(string);
 
 		return m.matches();
