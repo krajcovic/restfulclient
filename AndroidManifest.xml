@@ -26,9 +26,6 @@
         <activity
             android:name=".RESTExampleActivity"
             android:label="@string/app_name" >
-            <instrumentation
-                android:name="android.test.InstrumentationTestRunner"
-                android:targetPackage="cz.android.monet.restexample" />
 
             <!-- filter for sending text; accepts SENDTO action with sms URI schemes -->
             <intent-filter>
