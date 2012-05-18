@@ -8,12 +8,15 @@ import android.test.UiThreadTest;
 import android.view.KeyEvent;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
 public class RESTExampleTest extends
 		ActivityInstrumentationTestCase2<RESTExampleActivity> {
 
 	private EditText eHost;
 	private Button btnBarCode;
+	private Button btnSend;
+	private TextView output;
 
 	public RESTExampleTest() {
 		super("cz.android.monet.restexample", RESTExampleActivity.class);
@@ -31,9 +34,13 @@ public class RESTExampleTest extends
 		RESTExampleActivity activ = this.getActivity();
 		eHost = (EditText) activ.findViewById(R.id.editHostAddress);
 		btnBarCode = (Button) activ.findViewById(R.id.btnReadBarCode);
+		btnSend = (Button) activ.findViewById(R.id.btnSend);
+		output = (TextView) activ.findViewById(R.id.textReceiveData);
 
 		assertNotNull(eHost);
 		assertNotNull(btnBarCode);
+		assertNotNull(btnSend);
+		assertNotNull(output);
 	}
 
 	// public void testPreconditions() {
@@ -84,40 +91,48 @@ public class RESTExampleTest extends
 		assertEquals("172.25.50.53", eHost.getText().toString());
 	}
 
-	public void testStateDestroy() {
-
-		assertEquals("193.33.22.109", eHost.getText().toString());
-		setHostFocus();
-		sendKeys(KeyEvent.KEYCODE_DPAD_RIGHT);
-		sendKeys(KeyEvent.KEYCODE_DEL);
-		sendKeys("9");
-
-		this.getActivity().finish();
-
-		RESTExampleActivity activ = this.getActivity();
-		eHost = (EditText) activ.findViewById(R.id.editHostAddress);
-		assertEquals("993.33.22.109", eHost.getText().toString());
-
-	}
+//	public void testStateDestroy() {
+//
+//		assertEquals("193.33.22.109", eHost.getText().toString());
+//		setHostFocus();
+//		sendKeys(KeyEvent.KEYCODE_DPAD_RIGHT);
+//		sendKeys(KeyEvent.KEYCODE_DEL);
+//		sendKeys("9");
+//
+//		this.getActivity().finish();
+//
+//		RESTExampleActivity activ = this.getActivity();
+//		eHost = (EditText) activ.findViewById(R.id.editHostAddress);
+//		assertEquals("993.33.22.109", eHost.getText().toString());
+//	}
 
 	@UiThreadTest
 	public void testStatePause() {
 		// This is used later to invoke the onPause() and onResume() methods:
 		Instrumentation mInstr = this.getInstrumentation();
-		
+
 		assertEquals("193.33.22.109", eHost.getText().toString());
 		setHostFocus();
 		eHost.setText("127.0.0.1");
-		
+
 		mInstr.callActivityOnPause(this.getActivity());
-		
+
 		assertEquals("127.0.0.1", eHost.getText().toString());
 		setHostFocus();
 		eHost.setText("127.0.0.2");
-		
+
 		mInstr.callActivityOnResume(this.getActivity());
 		assertEquals("127.0.0.2", eHost.getText().toString());
+	}
+
+	@UiThreadTest
+	public void testMonkeyBugs() throws InterruptedException {
+		assertEquals("193.33.22.109", eHost.getText().toString());
+		setHostFocus();
+		eHost.setText("n%w;ay193.33.22.6MG=109km,*mmp`");
+
+		btnSend.performClick();
 		
-		
+		assertEquals(true, output.getText().toString().isEmpty());
 	}
 }
