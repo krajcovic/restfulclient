@@ -99,6 +99,9 @@ public class SendUserIdAsyncTask extends AsyncTask<Object, Void, String> {
 		} catch (URISyntaxException ex) {
 			ex.printStackTrace();
 			Log.e(TAG, ex.getMessage());
+		} catch (IllegalArgumentException ex) {
+			ex.printStackTrace();
+			Log.e(TAG, ex.getMessage());
 		} catch (IOException ex) {
 			ex.printStackTrace();
 			Log.e(TAG, ex.getMessage());
