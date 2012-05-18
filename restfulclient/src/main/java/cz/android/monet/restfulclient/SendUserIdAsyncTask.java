@@ -19,6 +19,7 @@ import android.R.bool;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.util.Log;
+import android.webkit.URLUtil;
 
 public class SendUserIdAsyncTask extends AsyncTask<Object, Void, String> {
 
@@ -52,8 +53,8 @@ public class SendUserIdAsyncTask extends AsyncTask<Object, Void, String> {
 				return null;
 			}
 
-			String urlToSendRequest = "http://" + targetDomain + ":" + "2323"
-					+ "/restfulexample/app/user/" + Integer.parseInt(userId);
+/*			String urlToSendRequest = "http://" + targetDomain + ":" + "2323"
+					+ "/restfulexample/app/user/" + Integer.parseInt(userId);*/
 			
 			Uri uri = new Uri.Builder()
 		    .scheme("http")
@@ -61,6 +62,11 @@ public class SendUserIdAsyncTask extends AsyncTask<Object, Void, String> {
 		    .path("/restfulexample/app/user/")
 		    .appendQueryParameter("param1", userId)
 		    .build();
+			if(!URLUtil.isValidUrl(uri.toString()))
+			{
+				Log.e(TAG, "Invalid uri |" + uri.toString());
+				return null;
+			}
 
 
 			DefaultHttpClient httpClient = new DefaultHttpClient();
