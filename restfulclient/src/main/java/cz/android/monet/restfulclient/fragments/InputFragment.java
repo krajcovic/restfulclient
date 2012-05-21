@@ -6,6 +6,7 @@ import cz.android.monet.restfulclient.SendUserIdAsyncTask;
 import cz.android.monet.restfulclient.interfaces.OnServerResultReturned;
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.database.Cursor;
@@ -23,10 +24,16 @@ import android.widget.EditText;
 public class InputFragment extends Fragment {
 
 	private static final String TAG = "InputFragment";
+	private static final String PREFS_NAME = "RestInputPrefs";
+	private static final String PREF_HOST = "hostIP";
+	private static final String PREF_SEND_VALUE = "lastBarCode";
+	private static final String PREF_PORT = "hostPort";
 
 	private EditText host;
 	private EditText sendData;
 	OnServerResultReturned mResultCallback;
+
+	SharedPreferences settings;
 
 	// The resul code
 	static final int RESULT_OK = -1;
@@ -43,27 +50,29 @@ public class InputFragment extends Fragment {
 		super.onActivityCreated(savedInstanceState);
 		host = ((EditText) getView().findViewById(R.id.editHostAddress));
 		sendData = (EditText) getView().findViewById(R.id.editSendData);
-		
-		 // Get the intent that started this activity
-	    Intent intent = getActivity().getIntent();
-	    Uri data = intent.getData();
-	    
-	    if (data != null && intent.getType().equals("text/plain")) {
-	    	host.setText(data.getHost().toString());
-	    }
-	    else
-	    {
-	    	host.setText("193.33.22.109");
-	    }
 
-		sendData.setText("1");
+		// Get the intent that started this activity
+		Intent intent = getActivity().getIntent();
+		Uri data = intent.getData();
+		settings = getActivity().getSharedPreferences(PREFS_NAME, 0);
+
+		if (data != null && intent.getType().equals("text/plain")) {
+			host.setText(data.getHost().toString());
+		} else {
+			// Restore preferences
+			host.setText(settings.getString("PREF_HOST", "193.33.22.109"));
+		}
+
+		sendData.setText(settings.getString("PREF_SEND_VALUE", "123456789"));
 
 		Button butSend = (Button) getView().findViewById(R.id.btnSend);
 		butSend.setOnClickListener(new View.OnClickListener() {
 
 			public void onClick(View v) {
-				new SendUserIdAsyncTask().execute(host.getText().toString(),
-						sendData.getText().toString(), mResultCallback);
+
+				new SendUserIdAsyncTask().execute(host.getText().toString().trim(),
+						settings.getInt("PREF_PORT", 2323), sendData.getText()
+								.toString().trim(), mResultCallback);
 			}
 
 		});
@@ -95,8 +104,19 @@ public class InputFragment extends Fragment {
 	}
 
 	@Override
+	public void onDestroyView() {
+		super.onDestroyView();
+		SharedPreferences.Editor editor = settings.edit();
+
+		editor.putString(PREF_HOST, host.getText().toString());
+		editor.putString(PREF_SEND_VALUE, sendData.getText().toString());
+		editor.putInt(PREF_PORT, 2323);
+	}
+
+	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
+		super.onCreateView(inflater, container, savedInstanceState);
 		// Inflate the layout for this fragment
 		return inflater.inflate(R.layout.input, container, false);
 	}
@@ -118,6 +138,7 @@ public class InputFragment extends Fragment {
 
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
 		// Check which request we're responding to
 		switch (requestCode) {
 		case PICK_CONTACT_REQUEST:

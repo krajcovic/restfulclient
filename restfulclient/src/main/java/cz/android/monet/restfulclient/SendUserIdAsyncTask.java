@@ -30,8 +30,8 @@ public class SendUserIdAsyncTask extends AsyncTask<Object, Void, String> {
 	@Override
 	protected String doInBackground(Object... params) {
 
-		mResultCallback = (OnServerResultReturned) params[2];
-		return sendData(params[0].toString(), params[1].toString());
+		mResultCallback = (OnServerResultReturned) params[3];
+		return sendData(params[0].toString(), new Integer(params[1].toString()), params[2].toString());
 	}
 
 	protected void onPostExecute(String result) {
@@ -45,7 +45,7 @@ public class SendUserIdAsyncTask extends AsyncTask<Object, Void, String> {
 		return m.matches();
 	}*/
 
-	protected String sendData(String targetDomain, String userId) {
+	protected String sendData(String targetDomain, Integer targetPort, String userId) {
 
 		try {
 			if (!targetDomain.matches("^\\s*(.*?)")) {
@@ -53,15 +53,8 @@ public class SendUserIdAsyncTask extends AsyncTask<Object, Void, String> {
 				return null;
 			}
 
-/*			String urlToSendRequest = "http://" + targetDomain + ":" + "2323"
-					+ "/restfulexample/app/user/" + Integer.parseInt(userId);*/
-			
-			Uri uri = new Uri.Builder()
-		    .scheme("http")
-		    .authority(targetDomain + ":2323")
-		    .path("/restfulexample/app/user/")
-		    .appendQueryParameter("param1", userId)
-		    .build();
+			Uri.Builder uri = Uri.parse("http://" + targetDomain + ":" + targetPort.toString()).buildUpon();
+			uri.path("/restfulexample/app/user/" + userId);		
 			if(!URLUtil.isValidUrl(uri.toString()))
 			{
 				Log.e(TAG, "Invalid uri |" + uri.toString());
