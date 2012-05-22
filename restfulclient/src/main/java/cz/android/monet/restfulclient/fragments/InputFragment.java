@@ -1,10 +1,14 @@
 package cz.android.monet.restfulclient.fragments;
 
 import java.util.List;
+import java.util.Map;
+
 import cz.android.monet.restfulclient.R;
 import cz.android.monet.restfulclient.SendUserIdAsyncTask;
 import cz.android.monet.restfulclient.interfaces.OnServerResultReturned;
+import cz.android.monet.restfulclient.providers.HistoryHostsProvider;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
@@ -12,14 +16,18 @@ import android.content.pm.ResolveInfo;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.provider.ContactsContract.CommonDataKinds.Phone;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ExpandableListView;
+import android.widget.ListView;
 
 public class InputFragment extends Fragment {
 
@@ -31,9 +39,8 @@ public class InputFragment extends Fragment {
 
 	private EditText host;
 	private EditText sendData;
+	private ListView hostList;
 	OnServerResultReturned mResultCallback;
-
-	SharedPreferences settings;
 
 	// The resul code
 	static final int RESULT_OK = -1;
@@ -45,34 +52,60 @@ public class InputFragment extends Fragment {
 		super.onCreate(savedInstanceState);
 	}
 
+	private void saveSharedPreferences() {
+		SharedPreferences settings = PreferenceManager
+				.getDefaultSharedPreferences(getActivity()
+						.getApplicationContext());
+		SharedPreferences.Editor editor = settings.edit();
+
+		editor.putString(PREF_HOST, host.getText().toString());
+		editor.putString(PREF_SEND_VALUE, sendData.getText().toString());
+		editor.putInt(PREF_PORT, 2323);
+
+		editor.commit();
+		editor.apply();
+	}
+
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
 		host = ((EditText) getView().findViewById(R.id.editHostAddress));
 		sendData = (EditText) getView().findViewById(R.id.editSendData);
+		hostList = (ListView) getView().findViewById(R.id.usedHosts);
+
+		hostList.setAdapter(new HistoryHostsProvider()
+				.getUserDictionaryWords(getActivity().getApplicationContext()));
 
 		// Get the intent that started this activity
 		Intent intent = getActivity().getIntent();
 		Uri data = intent.getData();
-		settings = getActivity().getSharedPreferences(PREFS_NAME, 0);
 
 		if (data != null && intent.getType().equals("text/plain")) {
 			host.setText(data.getHost().toString());
 		} else {
 			// Restore preferences
-			host.setText(settings.getString("PREF_HOST", "193.33.22.109"));
+			host.setText(PreferenceManager
+					.getDefaultSharedPreferences(getActivity()
+							.getApplicationContext()).getString(PREF_HOST, "193.33.22.109"));
 		}
 
-		sendData.setText(settings.getString("PREF_SEND_VALUE", "123456789"));
+		sendData.setText(PreferenceManager
+				.getDefaultSharedPreferences(getActivity()
+						.getApplicationContext()).getString(PREF_SEND_VALUE, "123456789"));
 
 		Button butSend = (Button) getView().findViewById(R.id.btnSend);
-		butSend.setOnClickListener(new View.OnClickListener() {
+		butSend.setOnClickListener(new OnClickListener() {
 
 			public void onClick(View v) {
 
-				new SendUserIdAsyncTask().execute(host.getText().toString().trim(),
-						settings.getInt("PREF_PORT", 2323), sendData.getText()
-								.toString().trim(), mResultCallback);
+				saveSharedPreferences();
+
+				SharedPreferences settings = PreferenceManager
+						.getDefaultSharedPreferences(getActivity()
+								.getApplicationContext());
+				new SendUserIdAsyncTask().execute(host.getText().toString()
+						.trim(), settings.getInt(PREF_PORT, 2323), sendData
+						.getText().toString().trim(), mResultCallback);
 			}
 
 		});
@@ -106,11 +139,8 @@ public class InputFragment extends Fragment {
 	@Override
 	public void onDestroyView() {
 		super.onDestroyView();
-		SharedPreferences.Editor editor = settings.edit();
 
-		editor.putString(PREF_HOST, host.getText().toString());
-		editor.putString(PREF_SEND_VALUE, sendData.getText().toString());
-		editor.putInt(PREF_PORT, 2323);
+		saveSharedPreferences();
 	}
 
 	@Override

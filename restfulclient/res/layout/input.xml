@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/input"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical" >
@@ -16,6 +17,13 @@
         android:layout_height="wrap_content"
         android:ems="10"
         android:inputType="text|textUri" />
+
+    <ListView
+        android:id="@+id/usedHosts"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+        <!-- Preview: listitem=@android:layout/simple_list_item_1 -->
+    </ListView>
 
     <TextView
         android:id="@+id/staticSendData"
