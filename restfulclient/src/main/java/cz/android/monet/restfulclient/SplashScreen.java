@@ -20,7 +20,7 @@ public class SplashScreen extends Activity {
 	/**
 	 * 
 	 */
-	protected int splashTime = 2000;
+	protected int splashTime = 200;
 	
 	/**
 	 * 

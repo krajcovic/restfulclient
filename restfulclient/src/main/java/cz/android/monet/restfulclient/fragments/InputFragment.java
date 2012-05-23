@@ -1,14 +1,13 @@
 package cz.android.monet.restfulclient.fragments;
 
 import java.util.List;
-import java.util.Map;
 
+import cz.android.monet.restfulclient.HistoryListActivity;
 import cz.android.monet.restfulclient.R;
 import cz.android.monet.restfulclient.SendUserIdAsyncTask;
 import cz.android.monet.restfulclient.interfaces.OnServerResultReturned;
-import cz.android.monet.restfulclient.providers.HistoryHostsProvider;
 import android.app.Activity;
-import android.content.Context;
+import android.content.ComponentName;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
@@ -18,6 +17,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.provider.ContactsContract.CommonDataKinds.Phone;
+import android.provider.UserDictionary;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -26,20 +26,17 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ExpandableListView;
-import android.widget.ListView;
 
 public class InputFragment extends Fragment {
 
 	private static final String TAG = "InputFragment";
-	private static final String PREFS_NAME = "RestInputPrefs";
 	private static final String PREF_HOST = "hostIP";
 	private static final String PREF_SEND_VALUE = "lastBarCode";
 	private static final String PREF_PORT = "hostPort";
 
 	private EditText host;
 	private EditText sendData;
-	private ListView hostList;
+	// private ListView hostList;
 	OnServerResultReturned mResultCallback;
 
 	// The resul code
@@ -52,6 +49,9 @@ public class InputFragment extends Fragment {
 		super.onCreate(savedInstanceState);
 	}
 
+	/**
+	 * 
+	 */
 	private void saveSharedPreferences() {
 		SharedPreferences settings = PreferenceManager
 				.getDefaultSharedPreferences(getActivity()
@@ -71,10 +71,9 @@ public class InputFragment extends Fragment {
 		super.onActivityCreated(savedInstanceState);
 		host = ((EditText) getView().findViewById(R.id.editHostAddress));
 		sendData = (EditText) getView().findViewById(R.id.editSendData);
-		hostList = (ListView) getView().findViewById(R.id.usedHosts);
 
-		hostList.setAdapter(new HistoryHostsProvider()
-				.getUserDictionaryWords(getActivity().getApplicationContext()));
+		// hostList.setAdapter(new HistoryHostsProvider()
+		// .getUserDictionaryWords(getActivity().getApplicationContext()));
 
 		// Get the intent that started this activity
 		Intent intent = getActivity().getIntent();
@@ -84,28 +83,32 @@ public class InputFragment extends Fragment {
 			host.setText(data.getHost().toString());
 		} else {
 			// Restore preferences
-			host.setText(PreferenceManager
-					.getDefaultSharedPreferences(getActivity()
-							.getApplicationContext()).getString(PREF_HOST, "193.33.22.109"));
+			host.setText(PreferenceManager.getDefaultSharedPreferences(
+					getActivity().getApplicationContext()).getString(PREF_HOST,
+					"193.33.22.109"));
 		}
 
-		sendData.setText(PreferenceManager
-				.getDefaultSharedPreferences(getActivity()
-						.getApplicationContext()).getString(PREF_SEND_VALUE, "123456789"));
+		sendData.setText(PreferenceManager.getDefaultSharedPreferences(
+				getActivity().getApplicationContext()).getString(
+				PREF_SEND_VALUE, "123456789"));
 
 		Button butSend = (Button) getView().findViewById(R.id.btnSend);
 		butSend.setOnClickListener(new OnClickListener() {
 
 			public void onClick(View v) {
 
+				String word = host.getText().toString().trim();
 				saveSharedPreferences();
+
+				UserDictionary.Words.addWord(getView().getContext(), word, 1,
+						UserDictionary.Words.LOCALE_TYPE_ALL);
 
 				SharedPreferences settings = PreferenceManager
 						.getDefaultSharedPreferences(getActivity()
 								.getApplicationContext());
-				new SendUserIdAsyncTask().execute(host.getText().toString()
-						.trim(), settings.getInt(PREF_PORT, 2323), sendData
-						.getText().toString().trim(), mResultCallback);
+				new SendUserIdAsyncTask().execute(word,
+						settings.getInt(PREF_PORT, 2323), sendData.getText()
+								.toString().trim(), mResultCallback);
 			}
 
 		});
@@ -132,6 +135,19 @@ public class InputFragment extends Fragment {
 				} else {
 					Log.e(TAG, "Activity pickContactIntent isn't safe.");
 				}
+			}
+		});
+
+		Button btnHistory = (Button) getView().findViewById(R.id.btnHistory);
+		btnHistory.setOnClickListener(new View.OnClickListener() {
+
+			public void onClick(View v) {
+				Intent history = new Intent();
+				history.setComponent(new ComponentName(
+						"cz.android.monet.restfulclient",
+						"cz.android.monet.restfulclient.HistoryListActivity"));
+				startActivity(history);
+
 			}
 		});
 	}

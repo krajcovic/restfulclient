@@ -9,5 +9,6 @@
     <string name="butSend">Send</string>
     <string name="staticReceivedData">Received data:</string>
     <string name="emptyString"></string>
+    <string name="buttonHistory">History</string>
 
 </resources>
