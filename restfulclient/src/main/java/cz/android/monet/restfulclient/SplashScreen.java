@@ -23,7 +23,7 @@ public class SplashScreen extends Activity {
 
 	// how long until we go to the next activity
 	/** The splash time. */
-	protected int splashTime = 200;
+	protected int splashTime = 2000;
 	
 	/** The splash thread. */
 	private Thread splashThread;
@@ -57,7 +57,7 @@ public class SplashScreen extends Activity {
 					 i.setClass(splashScreen, RESTExampleActivity.class);
 					 startActivity(i);
 					 
-					 stop();
+					 //stop();
 				 }
 			 }
 		};
