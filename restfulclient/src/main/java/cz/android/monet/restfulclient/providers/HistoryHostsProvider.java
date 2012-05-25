@@ -1,3 +1,6 @@
+/*
+ * 
+ */
 package cz.android.monet.restfulclient.providers;
 
 import java.util.ArrayList;
@@ -15,9 +18,14 @@ import android.widget.ArrayAdapter;
 import android.widget.ExpandableListView;
 import android.widget.SimpleCursorAdapter;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class HistoryHostsProvider.
+ */
 public class HistoryHostsProvider extends ListActivity {
 
 	// A "projection" defines the columns that will be returned for each row
+	/** The m projection. */
 	public String[] mProjection = { UserDictionary.Words._ID, // Contract class
 																// constant for
 																// the _ID
@@ -27,11 +35,18 @@ public class HistoryHostsProvider extends ListActivity {
 	};
 
 	// Defines a string to contain the selection clause
+	/** The m selection clause. */
 	private String mSelectionClause = null;
 
 	// Initializes an array to contain selection arguments
+	/** The m selection args. */
 	private String[] mSelectionArgs = { "" };
 
+	/**
+	 * Fill selection.
+	 *
+	 * @param mSearchString the m search string
+	 */
 	private void fillSelection(String mSearchString) {
 		// If the word is the empty string, gets everything
 		if (TextUtils.isEmpty(mSearchString)) {
@@ -52,6 +67,13 @@ public class HistoryHostsProvider extends ListActivity {
 
 	}
 
+	/**
+	 * Gets the user dictionary words.
+	 *
+	 * @param context the context
+	 * @param mSearchString the m search string
+	 * @return the user dictionary words
+	 */
 	public Cursor getUserDictionaryWords(Context context, String mSearchString) {
 		fillSelection(mSearchString);
 
@@ -65,6 +87,14 @@ public class HistoryHostsProvider extends ListActivity {
 
 	}
 
+	/**
+	 * Gets the user dictionary words.
+	 *
+	 * @param context the context
+	 * @param layoutId the layout id
+	 * @param to the to
+	 * @return the user dictionary words
+	 */
 	public SimpleCursorAdapter getUserDictionaryWords(Context context,
 			int layoutId, int[] to) {
 		return new SimpleCursorAdapter(context, layoutId,

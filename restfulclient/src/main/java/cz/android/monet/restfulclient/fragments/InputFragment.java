@@ -1,3 +1,6 @@
+/*
+ * 
+ */
 package cz.android.monet.restfulclient.fragments;
 
 import java.util.List;
@@ -27,30 +30,53 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class InputFragment.
+ */
 public class InputFragment extends Fragment {
 
+	/** The Constant TAG. */
 	private static final String TAG = "InputFragment";
+	
+	/** The Constant PREF_HOST. */
 	private static final String PREF_HOST = "hostIP";
+	
+	/** The Constant PREF_SEND_VALUE. */
 	private static final String PREF_SEND_VALUE = "lastBarCode";
+	
+	/** The Constant PREF_PORT. */
 	private static final String PREF_PORT = "hostPort";
 
+	/** The host. */
 	private EditText host;
+	
+	/** The send data. */
 	private EditText sendData;
 	// private ListView hostList;
+	/** The m result callback. */
 	OnServerResultReturned mResultCallback;
 
 	// The resul code
+	/** The Constant RESULT_OK. */
 	static final int RESULT_OK = -1;
 
 	// The request code
+	/** The Constant PICK_CONTACT_REQUEST. */
 	static final int PICK_CONTACT_REQUEST = 1;
+	
+	/** The Constant HISTORY_REQUEST. */
+	static final int HISTORY_REQUEST = 2;
 
+	/* (non-Javadoc)
+	 * @see android.support.v4.app.Fragment#onCreate(android.os.Bundle)
+	 */
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 	}
 
 	/**
-	 * 
+	 * Save shared preferences.
 	 */
 	private void saveSharedPreferences() {
 		SharedPreferences settings = PreferenceManager
@@ -66,6 +92,9 @@ public class InputFragment extends Fragment {
 		editor.apply();
 	}
 
+	/* (non-Javadoc)
+	 * @see android.support.v4.app.Fragment#onActivityCreated(android.os.Bundle)
+	 */
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
@@ -146,12 +175,15 @@ public class InputFragment extends Fragment {
 				history.setComponent(new ComponentName(
 						"cz.android.monet.restfulclient",
 						"cz.android.monet.restfulclient.HistoryListActivity"));
-				startActivity(history);
+				startActivityForResult(history, HISTORY_REQUEST);
 
 			}
 		});
 	}
 
+	/* (non-Javadoc)
+	 * @see android.support.v4.app.Fragment#onDestroyView()
+	 */
 	@Override
 	public void onDestroyView() {
 		super.onDestroyView();
@@ -159,6 +191,9 @@ public class InputFragment extends Fragment {
 		saveSharedPreferences();
 	}
 
+	/* (non-Javadoc)
+	 * @see android.support.v4.app.Fragment#onCreateView(android.view.LayoutInflater, android.view.ViewGroup, android.os.Bundle)
+	 */
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
@@ -167,6 +202,9 @@ public class InputFragment extends Fragment {
 		return inflater.inflate(R.layout.input, container, false);
 	}
 
+	/* (non-Javadoc)
+	 * @see android.support.v4.app.Fragment#onAttach(android.app.Activity)
+	 */
 	@Override
 	public void onAttach(Activity activity) {
 		super.onAttach(activity);
@@ -182,6 +220,9 @@ public class InputFragment extends Fragment {
 
 	}
 
+	/* (non-Javadoc)
+	 * @see android.support.v4.app.Fragment#onActivityResult(int, int, android.content.Intent)
+	 */
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
@@ -217,6 +258,12 @@ public class InputFragment extends Fragment {
 				sendData.setText(number);
 
 			}
+			break;
+		case HISTORY_REQUEST:
+			if (resultCode == RESULT_OK) {
+				host.setText(data.getCharSequenceExtra("NEW_HOST"));
+			}
+
 			break;
 		}
 	}

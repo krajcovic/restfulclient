@@ -1,3 +1,6 @@
+/*
+ * 
+ */
 package cz.android.monet.restfulclient;
 
 import cz.android.monet.restfulclient.R;
@@ -6,9 +9,11 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.MotionEvent;
 
+// TODO: Auto-generated Javadoc
 /**
- * @author krajcovic
+ * The Class SplashScreen.
  *
+ * @author krajcovic
  */
 /**
  * @author krajcovic
@@ -17,14 +22,10 @@ import android.view.MotionEvent;
 public class SplashScreen extends Activity {
 
 	// how long until we go to the next activity
-	/**
-	 * 
-	 */
+	/** The splash time. */
 	protected int splashTime = 200;
 	
-	/**
-	 * 
-	 */
+	/** The splash thread. */
 	private Thread splashThread;
 	
 	/* (non-Javadoc)

@@ -1,3 +1,6 @@
+/*
+ * 
+ */
 package cz.android.monet.restfulclient;
 
 import cz.android.monet.restfulclient.R;
@@ -14,12 +17,21 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class RESTExampleActivity.
+ */
 public class RESTExampleActivity extends FragmentActivity implements
 		OnServerResultReturned {
 
+	/** The Constant TAG. */
 	private static final String TAG = "RESTExampleActivity";
 
-	/** Called when the activity is first created. */
+	/**
+	 * Called when the activity is first created.
+	 *
+	 * @param savedInstanceState the saved instance state
+	 */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -29,12 +41,18 @@ public class RESTExampleActivity extends FragmentActivity implements
 		setContentView(R.layout.main);
 	}
 
+	/* (non-Javadoc)
+	 * @see android.app.Activity#onCreateOptionsMenu(android.view.Menu)
+	 */
 	public boolean onCreateOptionsMenu(Menu menu) {
 		MenuInflater inflater = getMenuInflater();
 		inflater.inflate(R.menu.default_menu, menu);
 		return true;
 	}
 
+	/* (non-Javadoc)
+	 * @see android.app.Activity#onOptionsItemSelected(android.view.MenuItem)
+	 */
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 		case R.id.quit:
@@ -48,6 +66,9 @@ public class RESTExampleActivity extends FragmentActivity implements
 		return true;
 	}
 
+	/* (non-Javadoc)
+	 * @see cz.android.monet.restfulclient.interfaces.OnServerResultReturned#onResultReturned(java.lang.String)
+	 */
 	public void onResultReturned(String resultMessage) {
 		// The user selected the headline of an article from the
 		// HeadlinesFragment
@@ -97,6 +118,9 @@ public class RESTExampleActivity extends FragmentActivity implements
 		}
 	}
 
+	/* (non-Javadoc)
+	 * @see android.support.v4.app.FragmentActivity#onStart()
+	 */
 	@Override
 	protected void onStart() {
 		super.onStart();
@@ -105,6 +129,9 @@ public class RESTExampleActivity extends FragmentActivity implements
 		Log.v(TAG, "onStart");
 	}
 
+	/* (non-Javadoc)
+	 * @see android.support.v4.app.FragmentActivity#onResume()
+	 */
 	@Override
 	protected void onResume() {
 		super.onResume();
@@ -113,6 +140,9 @@ public class RESTExampleActivity extends FragmentActivity implements
 		Log.v(TAG, "onResume");
 	}
 
+	/* (non-Javadoc)
+	 * @see android.support.v4.app.FragmentActivity#onPause()
+	 */
 	@Override
 	protected void onPause() {
 		super.onPause();
@@ -122,6 +152,9 @@ public class RESTExampleActivity extends FragmentActivity implements
 		Log.v(TAG, "onPause");
 	}
 
+	/* (non-Javadoc)
+	 * @see android.support.v4.app.FragmentActivity#onStop()
+	 */
 	@Override
 	protected void onStop() {
 		super.onStop();
@@ -130,6 +163,9 @@ public class RESTExampleActivity extends FragmentActivity implements
 		Log.v(TAG, "onStop");
 	}
 
+	/* (non-Javadoc)
+	 * @see android.support.v4.app.FragmentActivity#onDestroy()
+	 */
 	@Override
 	protected void onDestroy() {
 		super.onDestroy();

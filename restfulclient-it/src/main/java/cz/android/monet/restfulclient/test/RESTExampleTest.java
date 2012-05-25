@@ -10,18 +10,35 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class RESTExampleTest.
+ */
 public class RESTExampleTest extends
 		ActivityInstrumentationTestCase2<RESTExampleActivity> {
 
+	/** The e host. */
 	private EditText eHost;
+	
+	/** The btn bar code. */
 	private Button btnBarCode;
+	
+	/** The btn send. */
 	private Button btnSend;
+	
+	/** The output. */
 	private TextView output;
 
+	/**
+	 * Instantiates a new rEST example test.
+	 */
 	public RESTExampleTest() {
 		super("cz.android.monet.restexample", RESTExampleActivity.class);
 	}
 
+	/* (non-Javadoc)
+	 * @see android.test.ActivityInstrumentationTestCase2#setUp()
+	 */
 	protected void setUp() throws Exception {
 		super.setUp();
 
@@ -48,6 +65,9 @@ public class RESTExampleTest extends
 	// assertNotNull(btnBarCode);
 	// }
 
+	/**
+	 * Sets the host focus.
+	 */
 	private void setHostFocus() {
 		this.getActivity().runOnUiThread(new Runnable() {
 
@@ -62,11 +82,19 @@ public class RESTExampleTest extends
 		});
 	}
 
+	/**
+	 * Test default value.
+	 */
 	public void testDefaultValue() {
 
 		assertEquals("193.33.22.109", eHost.getText().toString());
 	}
 
+	/**
+	 * Test set host value.
+	 *
+	 * @throws InterruptedException the interrupted exception
+	 */
 	public void testSetHostValue() throws InterruptedException {
 		// setActivityInitialTouchMode(true);
 		setHostFocus();
@@ -106,7 +134,10 @@ public class RESTExampleTest extends
 //		assertEquals("993.33.22.109", eHost.getText().toString());
 //	}
 
-	@UiThreadTest
+	/**
+ * Test state pause.
+ */
+@UiThreadTest
 	public void testStatePause() {
 		// This is used later to invoke the onPause() and onResume() methods:
 		Instrumentation mInstr = this.getInstrumentation();
@@ -125,6 +156,11 @@ public class RESTExampleTest extends
 		assertEquals("127.0.0.2", eHost.getText().toString());
 	}
 
+	/**
+	 * Test monkey bugs.
+	 *
+	 * @throws InterruptedException the interrupted exception
+	 */
 	@UiThreadTest
 	public void testMonkeyBugs() throws InterruptedException {
 		assertEquals("193.33.22.109", eHost.getText().toString());

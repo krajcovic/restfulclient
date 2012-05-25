@@ -1,3 +1,6 @@
+/*
+ * 
+ */
 package cz.android.monet.restfulclient;
 
 import java.io.ByteArrayOutputStream;
@@ -21,12 +24,21 @@ import android.os.AsyncTask;
 import android.util.Log;
 import android.webkit.URLUtil;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class SendUserIdAsyncTask.
+ */
 public class SendUserIdAsyncTask extends AsyncTask<Object, Void, String> {
 
+	/** The Constant TAG. */
 	private static final String TAG = "SendUserIdAsyncTask";
 
+	/** The m result callback. */
 	OnServerResultReturned mResultCallback;
 
+	/* (non-Javadoc)
+	 * @see android.os.AsyncTask#doInBackground(Params[])
+	 */
 	@Override
 	protected String doInBackground(Object... params) {
 
@@ -34,6 +46,9 @@ public class SendUserIdAsyncTask extends AsyncTask<Object, Void, String> {
 		return sendData(params[0].toString(), new Integer(params[1].toString()), params[2].toString());
 	}
 
+	/* (non-Javadoc)
+	 * @see android.os.AsyncTask#onPostExecute(java.lang.Object)
+	 */
 	protected void onPostExecute(String result) {
 		mResultCallback.onResultReturned(result);
 	}
@@ -45,7 +60,15 @@ public class SendUserIdAsyncTask extends AsyncTask<Object, Void, String> {
 		return m.matches();
 	}*/
 
-	protected String sendData(String targetDomain, Integer targetPort, String userId) {
+	/**
+ * Send data.
+ *
+ * @param targetDomain the target domain
+ * @param targetPort the target port
+ * @param userId the user id
+ * @return the string
+ */
+protected String sendData(String targetDomain, Integer targetPort, String userId) {
 
 		try {
 			if (!targetDomain.matches("^\\s*(.*?)")) {
