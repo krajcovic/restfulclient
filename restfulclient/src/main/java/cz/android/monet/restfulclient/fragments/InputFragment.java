@@ -11,15 +11,19 @@ import cz.android.monet.restfulclient.SendUserIdAsyncTask;
 import cz.android.monet.restfulclient.interfaces.OnServerResultReturned;
 import android.app.Activity;
 import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.database.Cursor;
+import android.location.LocationManager;
+import android.location.LocationProvider;
 import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.provider.ContactsContract.CommonDataKinds.Phone;
+import android.provider.Settings;
 import android.provider.UserDictionary;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -179,12 +183,30 @@ public class InputFragment extends Fragment {
 
 			}
 		});
+		
+		LocationManager locationManager =
+		        (LocationManager) getView().getContext().getSystemService(Context.LOCATION_SERVICE);
+		
+		final boolean gpsEnabled = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
+		
+		if (!gpsEnabled) {
+	        // Build an alert dialog here that requests that the user enable
+	        // the location services, then when the user clicks the "OK" button,
+	        // call enableLocationSettings()
+					
+			Intent settingsIntent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+		    startActivity(settingsIntent);
+		}
+		
+		LocationProvider provider =
+		        locationManager.getProvider(LocationManager.GPS_PROVIDER);
+		Log.v(TAG, "Provider accuracy: " + provider.getAccuracy());
 	}
 
 	/* (non-Javadoc)
 	 * @see android.support.v4.app.Fragment#onDestroyView()
 	 */
-	@Override
+	@Override	
 	public void onDestroyView() {
 		super.onDestroyView();
 
