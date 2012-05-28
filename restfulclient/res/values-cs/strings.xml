@@ -9,5 +9,6 @@
     <string name="butSend">Odeslat</string>
     <string name="staticReceivedData">Přijatá data:</string>
     <string name="emptyString"></string>
+    <string name="answer">Odpoved</string>
 
 </resources>

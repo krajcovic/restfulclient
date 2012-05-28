@@ -10,5 +10,6 @@
     <string name="staticReceivedData">Received data:</string>
     <string name="emptyString"></string>
     <string name="buttonHistory">History</string>
+    <string name="answer">Answer</string>
 
 </resources>
