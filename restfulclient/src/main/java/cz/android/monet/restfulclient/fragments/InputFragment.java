@@ -252,7 +252,7 @@ public class InputFragment extends Fragment {
 			public void onStatusChanged(String provider, int status,
 					Bundle extras) {
 				// TODO Auto-generated metMessage.obtain(mHandler,
-				// UPDATE_LATLNG,
+				// UPDATE_LATLNG,p
 				// location.getLatitude() + ", " + location.getLongitude())
 				// .sendToTarget();hod stub
 

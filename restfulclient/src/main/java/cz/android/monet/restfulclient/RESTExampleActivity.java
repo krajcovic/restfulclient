@@ -38,6 +38,9 @@ public class RESTExampleActivity extends FragmentActivity implements
 		
 		Log.v(TAG, "onCreate");
 		
+		Log.v(TAG, "CPU count: " + Runtime.getRuntime().availableProcessors());
+
+		
 		setContentView(R.layout.main);
 	}
 
